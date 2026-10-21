@@ -592,6 +592,137 @@ button, input, select, textarea { font-family: inherit; font-size: 1rem; }
   cursor: pointer;
 }
 
+/* ---------- To'liq katalog ---------- */
+.catalog-list { display: flex; flex-direction: column; gap: 8px; }
+
+.catalog-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 12px 14px;
+  cursor: pointer;
+  color: var(--text);
+  transition: border-color .15s ease;
+}
+.catalog-row:hover { border-color: #c8d8f5; }
+
+.catalog-icon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: var(--r-tile);
+  background: var(--tile);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.catalog-label { flex: 1; font-size: .95rem; font-weight: 500; }
+.catalog-count { flex: none; font-size: .78rem; color: var(--text-2); }
+
+/* ---------- Profil / akkaunt ---------- */
+.auth-intro { text-align: center; padding: 18px 8px 22px; }
+.auth-emoji { font-size: 2.6rem; }
+.auth-intro h3 { font-size: 1.15rem; font-weight: 700; margin-top: 8px; }
+.auth-intro p { font-size: .88rem; color: var(--text-2); margin-top: 6px; }
+
+.role-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+
+.role-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 16px 12px;
+  cursor: pointer;
+  color: var(--text);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color .15s ease, background .15s ease;
+}
+.role-card:hover { border-color: var(--brand); background: var(--tile-active); }
+.role-icon { font-size: 1.7rem; }
+.role-card b { font-size: .95rem; }
+.role-card small { font-size: .74rem; color: var(--text-2); line-height: 1.3; }
+
+.role-tabs { display: flex; gap: 8px; margin: 16px 0 4px; }
+.role-tabs button {
+  flex: 1;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: var(--r-btn);
+  padding: 10px;
+  font-size: .88rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--text);
+}
+.role-tabs button.active { border-color: var(--brand); background: var(--tile-active); font-weight: 600; }
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 15px;
+  box-shadow: var(--shadow-card);
+}
+.profile-id { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.profile-id b { font-size: 1rem; }
+
+.role-badge {
+  align-self: flex-start;
+  margin-top: 4px;
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--brand);
+  background: var(--tile);
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+}
+
+.profile-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 14px;
+  margin-top: 10px;
+}
+.profile-block h4 { font-size: .8rem; font-weight: 600; color: var(--text-2); margin-bottom: 5px; }
+.profile-block p { font-size: .92rem; }
+.profile-block .muted { color: var(--text-2); font-size: .85rem; margin-top: 3px; }
+.profile-block .link-btn { margin-top: 7px; }
+
+.muted { color: var(--text-2); }
+
+#auth-form input.invalid,
+#auth-form select.invalid { border-color: var(--danger); background: var(--danger-bg); }
+
+#auth-form label { display: block; font-size: .82rem; font-weight: 600; color: var(--text-2); margin: 14px 0 6px; }
+#auth-form input,
+#auth-form select,
+#auth-form textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--r-btn);
+  padding: 11px 13px;
+  font-size: .92rem;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+}
+#auth-form input:focus,
+#auth-form select:focus,
+#auth-form textarea:focus { border-color: var(--brand); }
+
 /* ---------- Pastki navigatsiya ---------- */
 .bottom-nav {
   display: flex;

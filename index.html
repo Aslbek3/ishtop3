@@ -58,12 +58,22 @@
       </div>
 
       <div class="section-head">
-        <h2>Tavsiya etilgan ustalar</h2>
+        <h2 id="featured-title">Tavsiya etilgan ustalar</h2>
         <span class="section-note" id="featured-count"></span>
       </div>
       <div id="featured-list" class="usta-list"></div>
 
       <button id="quick-order-btn" class="btn btn-primary btn-block">Tezkor buyurtma berish</button>
+    </section>
+
+    <!-- TO'LIQ KATALOG ("Boshqa" plitkasi ochadi) -->
+    <section id="view-catalog" class="view">
+      <div class="section-head">
+        <h2>Barcha yo'nalishlar</h2>
+        <span class="section-note" id="catalog-count"></span>
+      </div>
+      <p class="admin-note">Bosh sahifada eng ko'p qidiriladigan xizmatlar turadi. Bu yerda barcha yo'nalishlar to'liq ro'yxati.</p>
+      <div id="catalog-list" class="catalog-list"></div>
     </section>
 
     <!-- QIDIRUV / USTALAR RO'YXATI -->
@@ -94,6 +104,14 @@
       <button id="orders-new-btn" class="btn btn-primary btn-block">Yangi buyurtma berish</button>
     </section>
 
+    <!-- PROFIL / AKKAUNT -->
+    <section id="view-profile" class="view">
+      <div class="section-head">
+        <h2>Profil</h2>
+      </div>
+      <div id="profile-view"></div>
+    </section>
+
     <!-- BOSHQARUV PANELI (ADMIN) -->
     <section id="view-admin" class="view">
       <div class="section-head">
@@ -111,6 +129,7 @@
     <button class="nav-btn active" data-view="home"><b>⌂</b><span>Bosh sahifa</span></button>
     <button class="nav-btn" data-view="search"><b>⌕</b><span>Ustalar</span></button>
     <button class="nav-btn" data-view="orders"><b>🧾</b><span>Buyurtmalar</span></button>
+    <button class="nav-btn" data-view="profile"><b>👤</b><span>Profil</span></button>
   </nav>
 </div>
 
@@ -120,6 +139,53 @@
     <button class="close" data-close-modal>×</button>
     <h3>Hudud tanlash</h3>
     <div id="region-options" class="region-options"></div>
+  </div>
+</div>
+
+<!-- KIRISH / RO'YXATDAN O'TISH MODALI -->
+<div class="modal" id="modal-auth">
+  <div class="sheet">
+    <button class="close" data-close-modal>×</button>
+    <h3 id="auth-title">Kirish</h3>
+
+    <div class="role-tabs">
+      <button type="button" data-role-tab="mijoz" class="active">🙋 Mijoz</button>
+      <button type="button" data-role-tab="usta">🛠️ Usta</button>
+    </div>
+
+    <form id="auth-form" novalidate>
+      <label for="auth-name">Ism familiyangiz</label>
+      <input type="text" id="auth-name" placeholder="Ism Familiya" required>
+      <small class="field-error" id="err-auth-name"></small>
+
+      <label for="auth-phone">Telefon raqamingiz</label>
+      <input type="tel" id="auth-phone" placeholder="+998 90 123 45 67" required>
+      <small class="field-error" id="err-auth-phone"></small>
+
+      <label for="auth-region">Hudud</label>
+      <select id="auth-region" required>
+        <option value="">Hududni tanlang</option>
+      </select>
+      <small class="field-error" id="err-auth-region"></small>
+
+      <div id="auth-usta-fields">
+        <label for="auth-category">Xizmat turi</label>
+        <select id="auth-category">
+          <option value="">Xizmat turini tanlang</option>
+        </select>
+        <small class="field-error" id="err-auth-category"></small>
+
+        <label for="auth-price">Narxi (ixtiyoriy)</label>
+        <input type="text" id="auth-price" placeholder="Masalan: 80 000 – 150 000 so'm">
+
+        <label for="auth-bio">O'zingiz haqingizda (ixtiyoriy)</label>
+        <textarea id="auth-bio" rows="3" placeholder="Tajribangiz va qanday ishlarni bajarasiz..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Davom etish</button>
+    </form>
+
+    <p class="admin-note">Demo rejim: parol so'ralmaydi, ma'lumotlar faqat shu brauzerda saqlanadi.</p>
   </div>
 </div>
 
