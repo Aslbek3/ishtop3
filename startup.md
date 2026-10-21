@@ -31,9 +31,9 @@ vositalar bilan demo qilib, haqiqiy talabni tekshirish.
 
 | # | Loyiha | Demo | Kod | Deploy |
 |---|---|---|---|---|
-| 1 | **UstaTop** | ✅ tayyor | ✅ `public/` | 🚀 GitHub Pages |
-| 2 | **IjaraGo** | ✅ chatda bor edi | ❌ yo'qolgan (sandbox) | ⏳ keyingi navbat |
-| 3 | **LUXPLAY** | ❌ | ❌ | ⏳ |
+| 1 | **UstaTop** | ✅ tayyor | ✅ `fr5/ustatop` | ✅ [jonli](https://aslbek3.github.io/ishtop3/) |
+| 2 | **IjaraGo** | ✅ qayta qurildi | ✅ `fr5/ijarago` | ✅ [jonli](https://aslbek3.github.io/ijarago/) |
+| 3 | **LUXPLAY** | ✅ tayyor | ✅ `fr5/luxplay` | ✅ [jonli](https://aslbek3.github.io/luxplay/) |
 | 4 | **BiznesAI** | ❌ | ❌ | ⏳ |
 | 5 | **MahallaMarket** | ❌ | ❌ | ⏳ |
 
@@ -144,9 +144,11 @@ orqali to'lov, murakkab reyting algoritmi, iPhone ilovasi.
 
 # 2. IjaraGo — kvartira ijarasi platformasi
 
-**Holati:** suhbatda to'liq demo yaratilgan edi, lekin fayllar ChatGPT
-sandboxida qolib ketdi (`ijarago_demo_complete.html`,
-`ijarago_complete_site.zip`) — **kodni qaytadan yozish kerak.**
+**Holati:** ✅ **demo tayyor va deploy qilingan** — https://aslbek3.github.io/ijarago/
+
+Asl fayllar ChatGPT sandboxida yo'qolgan edi (`ijarago_demo_complete.html`,
+`ijarago_complete_site.zip`), shuning uchun quyidagi spetsifikatsiya
+bo'yicha noldan qayta yozildi. Repo: `Aslbek3/ijarago`, papka: `d:/fr5/ijarago`.
 
 ## Tanlangan parametrlar
 
@@ -194,29 +196,42 @@ OLX, Urbo, Uyiz.uz
 
 ## Keyingi qadamlar
 
-- [ ] Demo kodini noldan yozish (yuqoridagi spetsifikatsiya bo'yicha)
-- [ ] Xarita: Leaflet + OpenStreetMap (bepul, API kaliti shart emas)
-- [ ] GitHub Pages'ga deploy
-- [ ] Haqiqiy umumiy baza (Firebase / Supabase bepul tarif)
+- [x] Demo kodini noldan yozish
+- [x] Xarita: Leaflet 1.9.4 + OpenStreetMap
+- [x] GitHub Pages'ga deploy
+- [ ] Haqiqiy umumiy baza (PocketBase — UstaTop bilan bir xil andoza)
 - [ ] Foydalanuvchi akkauntlari va admin panel
+- [ ] Uy rasmlarini yuklash
 
 ---
 
 # 3. LUXPLAY — o'yinchilar uchun yagona platforma
 
-**Holati:** foydalanuvchining oldingi loyihasi. Suhbatda demo
-yaratilmagan — faqat eslatilgan.
+**Holati:** ✅ **demo tayyor va deploy qilingan** — https://aslbek3.github.io/luxplay/
+
+Suhbatda demo yaratilmagan edi, faqat g'oya sifatida eslatilgan.
+Tungi mavzuda noldan yozildi. Repo: `Aslbek3/luxplay`, papka: `d:/fr5/luxplay`.
 
 O'yinlar, do'stlar, chat, ovozli xonalar, profillar va sovg'alar bitta
 ilovada. Avval kichik ishlaydigan versiya, keyin kengaytirish.
 
 **Daromad:** premium obuna, virtual sovg'alar, hamkorlik.
 
+## Demo tarkibi
+
+O'yinlar katalogi (8 ta, 5 janr), ovozli xonalar, do'stlar ro'yxati,
+virtual sovg'alar (6 tur, 💎 balans), Premium obuna oqimi, profil.
+
 ## Keyingi qadamlar
 
-- [ ] Qaysi funksiya birinchi bo'lishini aniqlash (ovozli xona? chat?)
-- [ ] Demo spetsifikatsiyasini tuzish
-- [ ] Demo kodini yozish
+- [x] Demo kodini yozish va deploy qilish
+- [ ] Ovozli aloqa — WebRTC (eng og'ir qism)
+- [ ] Real vaqt chat
+- [ ] To'lov tizimi (tanga sotib olish)
+- [ ] O'yin integratsiyasi
+
+> LUXPLAY texnik jihatdan eng og'ir loyiha: ovoz va real vaqt aloqasi
+> kerak. Shuning uchun UstaTop va IjaraGo backendidan keyin ko'tariladi.
 
 ---
 
