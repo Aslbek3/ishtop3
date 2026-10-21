@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1757cf">
 <title>UstaTop — ustalar va mijozlar platformasi</title>
 <meta name="description" content="UstaTop — santexnik, elektrik, mebel ustasi va boshqa mutaxassislarni toping, narx va sharhlarni ko'ring, onlayn buyurtma bering.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,10 +14,28 @@
 <body>
 <div class="app">
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <span class="logo"><span class="logo-badge">🛠️</span>UstaTop</span>
-      <span class="tagline">Ishonchli ustalar — bir joyda</span>
+  <header class="appbar" id="appbar">
+    <div class="brand-row">
+      <div class="brand">
+        <span class="brand-mark">U</span>
+        <span class="brand-text">
+          <b>UstaTop</b>
+          <small>Usta topish oson</small>
+        </span>
+      </div>
+      <button type="button" class="pill" id="region-pill">
+        <span class="pill-icon">📍</span>
+        <span id="region-pill-label">Hudud tanlash</span>
+      </button>
+    </div>
+
+    <div class="hero-body" id="hero-body">
+      <h1>Uyingizga usta kerakmi?</h1>
+      <p class="hero-sub">Ishonchli xizmatlarni bir joydan toping.</p>
+      <form id="home-search-form" class="searchbar">
+        <input type="text" id="home-search-input" placeholder="Masalan, santexnik...">
+        <button type="submit">Qidirish</button>
+      </form>
     </div>
   </header>
 
@@ -24,19 +43,24 @@
 
     <!-- BOSH SAHIFA -->
     <section id="view-home" class="view active">
-      <div class="hero">
-        <h1>Ustangizni toping</h1>
-        <p>Santexnik, elektrik, mebel ustasi va boshqa mutaxassislarni qidiring</p>
-        <form id="home-search-form" class="search-box">
-          <input type="text" id="home-search-input" placeholder="Masalan: santexnik...">
-          <button type="submit">Qidirish</button>
-        </form>
+      <div class="section-head">
+        <h2>Xizmat turlari</h2>
+        <span class="section-note">Keraklisini tanlang</span>
       </div>
-
-      <h2 class="section-title">Xizmat turlari</h2>
       <div id="category-grid" class="category-grid"></div>
 
-      <h2 class="section-title">Mashhur ustalar</h2>
+      <div class="notice">
+        <span class="notice-icon">🤝</span>
+        <div>
+          <b>Usta qidirish bepul</b>
+          <p>Buyurtma yuboring — siz bilan bog'lanish uchun ma'lumot qoldiring.</p>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>Tavsiya etilgan ustalar</h2>
+        <span class="section-note" id="featured-count"></span>
+      </div>
       <div id="featured-list" class="usta-list"></div>
 
       <button id="quick-order-btn" class="btn btn-primary btn-block">Tezkor buyurtma berish</button>
@@ -44,7 +68,10 @@
 
     <!-- QIDIRUV / USTALAR RO'YXATI -->
     <section id="view-search" class="view">
-      <h2 class="section-title">Ustalar</h2>
+      <div class="section-head">
+        <h2>Ustalar</h2>
+        <span class="section-note" id="search-count"></span>
+      </div>
       <div class="filters">
         <input type="text" id="filter-query" placeholder="Ism yoki xizmat bo'yicha qidirish...">
         <select id="filter-category">
@@ -59,15 +86,21 @@
 
     <!-- BUYURTMALARIM -->
     <section id="view-orders" class="view">
-      <h2 class="section-title">Buyurtmalarim</h2>
+      <div class="section-head">
+        <h2>Buyurtmalarim</h2>
+        <span class="section-note" id="orders-count"></span>
+      </div>
       <div id="orders-list" class="orders-list"></div>
       <button id="orders-new-btn" class="btn btn-primary btn-block">Yangi buyurtma berish</button>
     </section>
 
     <!-- BOSHQARUV PANELI (ADMIN) -->
     <section id="view-admin" class="view">
-      <h2 class="section-title">Boshqaruv paneli</h2>
-      <p class="admin-note">Demo rejim: haqiqiy loyihada bu panel faqat administratorlar uchun himoyalangan bo'ladi.</p>
+      <div class="section-head">
+        <h2>Boshqaruv paneli</h2>
+        <button type="button" class="link-btn" id="admin-exit">Chiqish</button>
+      </div>
+      <p class="admin-note">Demo rejim: PIN kodi brauzerda tekshiriladi, shuning uchun bu haqiqiy himoya emas. Jonli versiyada panel server tomonida, parol va ro'yxatdan o'tish bilan himoyalanadi.</p>
       <div id="admin-stats" class="admin-stats"></div>
       <div id="admin-orders" class="admin-orders"></div>
     </section>
@@ -77,9 +110,33 @@
   <nav class="bottom-nav">
     <button class="nav-btn active" data-view="home"><b>⌂</b><span>Bosh sahifa</span></button>
     <button class="nav-btn" data-view="search"><b>⌕</b><span>Ustalar</span></button>
-    <button class="nav-btn" data-view="orders"><b>🧾</b><span>Buyurtmalarim</span></button>
-    <button class="nav-btn" data-view="admin"><b>⚙</b><span>Admin</span></button>
+    <button class="nav-btn" data-view="orders"><b>🧾</b><span>Buyurtmalar</span></button>
   </nav>
+</div>
+
+<!-- HUDUD TANLASH MODAL -->
+<div class="modal" id="modal-region">
+  <div class="sheet">
+    <button class="close" data-close-modal>×</button>
+    <h3>Hudud tanlash</h3>
+    <div id="region-options" class="region-options"></div>
+  </div>
+</div>
+
+<!-- ADMIN PIN MODALI -->
+<div class="modal" id="modal-pin">
+  <div class="sheet sheet-confirm">
+    <h3>Boshqaruv paneli</h3>
+    <p class="pin-note">Davom etish uchun PIN kodni kiriting.</p>
+    <form id="pin-form" novalidate>
+      <input type="password" id="pin" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="••••">
+      <small class="field-error" id="err-pin"></small>
+      <div class="confirm-actions">
+        <button type="button" class="btn btn-secondary" id="pin-cancel">Bekor qilish</button>
+        <button type="submit" class="btn btn-primary">Kirish</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- USTA PROFILI MODAL -->
