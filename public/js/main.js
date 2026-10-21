@@ -3,11 +3,15 @@
 const CATEGORIES = [
   { key: 'santexnik', label: 'Santexnik', icon: '🚰' },
   { key: 'elektrik', label: 'Elektrik', icon: '💡' },
-  { key: 'mebel', label: 'Mebel ustasi', icon: '🪚' },
-  { key: 'rangsoz', label: 'Rangsoz-shtukatur', icon: '🎨' },
-  { key: 'konditsioner', label: 'Konditsioner ustasi', icon: '❄️' },
-  { key: 'qurilish', label: "Qurilish-ta'mirlash", icon: '🧱' },
+  { key: 'konditsioner', label: 'Konditsioner', icon: '❄️' },
+  { key: 'texnika', label: 'Texnika', icon: '🧺' },
+  { key: 'mebel', label: 'Mebel', icon: '🪑' },
+  { key: 'boyoqchi', label: "Bo'yoqchi", icon: '🖌️' },
+  { key: 'boshqa', label: 'Boshqa', icon: '➕' },
 ];
+
+/* Bosh sahifadagi plitkalar: "Barchasi" + barcha xizmat turlari (4x2 grid) */
+const HOME_TILES = [{ key: '', label: 'Barchasi', icon: '🧰' }, ...CATEGORIES];
 
 const REGIONS = [
   'Toshkent shahri',
@@ -40,10 +44,10 @@ const USTALAR = [
   { id: 'u6', name: 'Bekzod Nazarov', categoryKey: 'mebel', region: 'Buxoro', rating: 4.4, reviewsCount: 22, price: "400 000 so'mdan", phone: '+998 91 678 90 12', bio: "Shkaf, stol, karavot yasash va mebel yig'ish xizmatlari.", reviews: [
     { name: 'Zarina', stars: 4, text: 'Sifatli ishladi, narxi arzon.' },
   ] },
-  { id: 'u7', name: 'Olim Saidov', categoryKey: 'rangsoz', region: 'Toshkent viloyati', rating: 4.6, reviewsCount: 37, price: "25 000 so'm/kv.m", phone: '+998 93 789 01 23', bio: 'Devor, shift bo‘yash va shtukatur ishlari.', reviews: [
+  { id: 'u7', name: 'Olim Saidov', categoryKey: 'boyoqchi', region: 'Toshkent viloyati', rating: 4.6, reviewsCount: 37, price: "25 000 so'm/kv.m", phone: '+998 93 789 01 23', bio: 'Devor, shift bo‘yash va shtukatur ishlari.', reviews: [
     { name: 'Feruza', stars: 5, text: 'Devorlarimiz juda tekis chiqdi.' },
   ] },
-  { id: 'u8', name: 'Rustam Qodirov', categoryKey: 'rangsoz', region: 'Andijon', rating: 4.2, reviewsCount: 14, price: "20 000 so'm/kv.m", phone: '+998 94 890 12 34', bio: 'Ichki va tashqi bo‘yash ishlari, dekorativ shtukatur.', reviews: [
+  { id: 'u8', name: 'Rustam Qodirov', categoryKey: 'boyoqchi', region: 'Andijon', rating: 4.2, reviewsCount: 14, price: "20 000 so'm/kv.m", phone: '+998 94 890 12 34', bio: 'Ichki va tashqi bo‘yash ishlari, dekorativ shtukatur.', reviews: [
     { name: 'Hulkar', stars: 4, text: 'Vaqtida va arzon qilib berdi.' },
   ] },
   { id: 'u9', name: 'Davron Egamov', categoryKey: 'konditsioner', region: 'Toshkent shahri', rating: 4.8, reviewsCount: 58, price: "100 000 – 200 000 so'm", phone: '+998 90 901 23 45', bio: "Konditsioner va muzlatgich o'rnatish, ta'mirlash, tozalash.", reviews: [
@@ -52,15 +56,77 @@ const USTALAR = [
   { id: 'u10', name: 'Sanjar Ibragimov', categoryKey: 'konditsioner', region: "Farg'ona", rating: 4.1, reviewsCount: 9, price: "90 000 – 180 000 so'm", phone: '+998 97 012 34 56', bio: 'Sovutish tizimlarini diagnostika va ta‘mirlash.', reviews: [
     { name: 'Lola', stars: 4, text: 'Tez keldi, muammoni topdi.' },
   ] },
-  { id: 'u11', name: 'Farrux Alimov', categoryKey: 'qurilish', region: 'Toshkent shahri', rating: 4.9, reviewsCount: 76, price: 'Kelishilgan narxda', phone: '+998 91 123 45 67', bio: "Kapital va kosmetik ta'mirlash, old-key ishlar.", reviews: [
+  { id: 'u11', name: 'Farrux Alimov', categoryKey: 'boshqa', region: 'Toshkent shahri', rating: 4.9, reviewsCount: 76, price: 'Kelishilgan narxda', phone: '+998 91 123 45 67', bio: "Kapital va kosmetik ta'mirlash, old-key ishlar.", reviews: [
     { name: 'Umida', stars: 5, text: 'Butun kvartirani ajoyib qilib berdi.' },
   ] },
-  { id: 'u12', name: 'Jamshid Qurbonov', categoryKey: 'qurilish', region: 'Samarqand', rating: 4.0, reviewsCount: 11, price: 'Kelishilgan narxda', phone: '+998 93 234 56 78', bio: 'Devor, pol, shift ishlarini bajaradi.', reviews: [
+  { id: 'u12', name: 'Jamshid Qurbonov', categoryKey: 'boshqa', region: 'Samarqand', rating: 4.0, reviewsCount: 11, price: 'Kelishilgan narxda', phone: '+998 93 234 56 78', bio: 'Devor, pol, shift ishlarini bajaradi.', reviews: [
     { name: 'Sevara', stars: 4, text: 'Ishni belgilangan vaqtda tugatdi.' },
+  ] },
+  { id: 'u13', name: 'Ulug‘bek Tursunov', categoryKey: 'texnika', region: 'Toshkent shahri', rating: 4.7, reviewsCount: 41, price: "50 000 – 120 000 so'm", phone: '+998 90 345 67 12', bio: "Kir yuvish mashinasi, muzlatgich va oshxona texnikasini ta'mirlash.", reviews: [
+    { name: 'Nigora', stars: 5, text: 'Kir yuvish mashinasini bir soatda tuzatdi.' },
+    { name: 'Temur', stars: 4, text: 'Ehtiyot qismi arzon bo‘ldi, rahmat.' },
+  ] },
+  { id: 'u14', name: 'Doniyor Ismoilov', categoryKey: 'texnika', region: 'Buxoro', rating: 4.3, reviewsCount: 16, price: "40 000 – 100 000 so'm", phone: '+998 93 456 78 23', bio: 'Maishiy texnika diagnostikasi va ta‘mirlash, uyga chiqib xizmat ko‘rsatish.', reviews: [
+    { name: 'Dilafruz', stars: 4, text: 'Uyga kelib tuzatib berdi.' },
   ] },
 ];
 
 const ORDERS_KEY = 'ustatop_orders';
+
+/* ---------- Boshqaruv paneli (admin) ----------
+   Panel oddiy foydalanuvchiga ko'rinmaydi: pastki navigatsiyada tugmasi yo'q.
+   Kirishning ikki yo'li bor:
+     1) havolaga #admin qo'shish  — masalan  .../index.html#admin
+     2) hero'dagi "U" logosiga ketma-ket 5 marta bosish (telefon uchun qulay)
+   Ikkalasida ham PIN so'raladi.
+
+   DIQQAT: PIN brauzerda tekshiriladi — bu haqiqiy himoya emas, faqat
+   panelni tasodifiy ochilishdan to'sadi. Jonli versiyada tekshiruv
+   server tomonida bo'lishi shart. */
+const ADMIN_PIN = '2468';
+const ADMIN_UNLOCK_KEY = 'ustatop_admin_ok';
+const LOGO_TAPS_NEEDED = 5;
+
+let logoTaps = 0;
+let logoTapTimer = null;
+
+function isAdminUnlocked() {
+  try { return sessionStorage.getItem(ADMIN_UNLOCK_KEY) === '1'; } catch (e) { return false; }
+}
+
+function setAdminUnlocked(on) {
+  try {
+    if (on) sessionStorage.setItem(ADMIN_UNLOCK_KEY, '1');
+    else sessionStorage.removeItem(ADMIN_UNLOCK_KEY);
+  } catch (e) { /* xotira ishlamasa ham ilova ishlashda davom etadi */ }
+}
+
+/* Panelga kirishga urinish: ochiq bo'lsa — kiradi, bo'lmasa PIN so'raydi */
+function requestAdmin() {
+  if (isAdminUnlocked()) { showView('admin'); return; }
+  qs('pin').value = '';
+  setFieldError('pin', '');
+  qs('modal-pin').classList.add('open');
+  setTimeout(() => qs('pin').focus(), 50);
+}
+
+function exitAdmin() {
+  setAdminUnlocked(false);
+  if (location.hash === '#admin') history.replaceState(null, '', location.pathname + location.search);
+  showView('home');
+  showToast('Boshqaruv panelidan chiqdingiz');
+}
+
+/* Logoga 5 marta bosish (3 soniya ichida) */
+function handleLogoTap() {
+  logoTaps += 1;
+  clearTimeout(logoTapTimer);
+  logoTapTimer = setTimeout(() => { logoTaps = 0; }, 3000);
+  if (logoTaps >= LOGO_TAPS_NEEDED) {
+    logoTaps = 0;
+    requestAdmin();
+  }
+}
 
 const state = {
   view: 'home',
@@ -147,11 +213,16 @@ function seedDemoOrders() {
 
 /* ---------- navigation ---------- */
 function showView(name) {
+  /* Boshqaruv paneli faqat PIN kiritilgandan keyin ochiladi */
+  if (name === 'admin' && !isAdminUnlocked()) { requestAdmin(); return; }
+
   document.querySelectorAll('.view').forEach((v) => v.classList.remove('active'));
   qs('view-' + name).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach((b) => b.classList.toggle('active', b.dataset.view === name));
+  qs('appbar').classList.toggle('compact', name !== 'home');
   state.view = name;
   document.querySelector('.view-wrap').scrollTop = 0;
+  window.scrollTo(0, 0);
 
   if (name === 'search') renderSearchResults();
   if (name === 'orders') renderOrdersList();
@@ -160,8 +231,8 @@ function showView(name) {
 
 /* ---------- home ---------- */
 function renderCategoryGrid() {
-  qs('category-grid').innerHTML = CATEGORIES.map((c) => `
-    <div class="category-card" data-action="go-category" data-key="${c.key}">
+  qs('category-grid').innerHTML = HOME_TILES.map((c) => `
+    <div class="category-card${c.key === state.filters.category ? ' active' : ''}" data-action="go-category" data-key="${c.key}">
       <span class="icon">${c.icon}</span>
       <span class="label">${c.label}</span>
     </div>
@@ -183,8 +254,28 @@ function ustaCardHtml(usta) {
 }
 
 function renderFeatured() {
-  const top = [...USTALAR].sort((a, b) => b.rating - a.rating).slice(0, 4);
-  qs('featured-list').innerHTML = top.map(ustaCardHtml).join('');
+  const pool = state.filters.region ? USTALAR.filter((u) => u.region === state.filters.region) : USTALAR;
+  const top = [...pool].sort((a, b) => b.rating - a.rating).slice(0, 4);
+  qs('featured-list').innerHTML = top.length
+    ? top.map(ustaCardHtml).join('')
+    : '<div class="empty-state">Bu hududda hozircha usta yo‘q.</div>';
+  qs('featured-count').textContent = top.length ? top.length + ' ta' : '';
+}
+
+/* ---------- hudud tanlash ---------- */
+function renderRegionOptions() {
+  const opts = [{ value: '', label: 'Barcha hududlar' }, ...REGIONS.map((r) => ({ value: r, label: r }))];
+  qs('region-options').innerHTML = opts.map((o) => `
+    <button type="button" class="region-option${o.value === state.filters.region ? ' active' : ''}" data-action="pick-region" data-region="${o.value}">${o.label}</button>
+  `).join('');
+}
+
+function setRegion(region) {
+  state.filters.region = region;
+  qs('region-pill-label').textContent = region || 'Hudud tanlash';
+  qs('filter-region').value = region;
+  renderFeatured();
+  if (state.view === 'search') renderSearchResults();
 }
 
 /* ---------- search ---------- */
@@ -207,13 +298,15 @@ function renderSearchResults() {
   qs('search-results').innerHTML = results.length
     ? results.map(ustaCardHtml).join('')
     : '<div class="empty-state">Hech narsa topilmadi. Boshqa so‘rov bilan urinib ko‘ring.</div>';
+  qs('search-count').textContent = results.length + ' ta';
 }
 
 function goToSearchWithCategory(key) {
-  state.filters = { query: '', category: key, region: '' };
+  /* tanlangan hudud saqlanadi — faqat xizmat turi va matn so'rovi yangilanadi */
+  state.filters = { query: '', category: key, region: state.filters.region };
   qs('filter-query').value = '';
   qs('filter-category').value = key;
-  qs('filter-region').value = '';
+  renderCategoryGrid();
   showView('search');
 }
 
@@ -374,6 +467,7 @@ function renderOrdersList() {
       </div>
     `).join('')
     : '<div class="empty-state">Hali buyurtma yo‘q.</div>';
+  qs('orders-count').textContent = orders.length ? orders.length + ' ta' : '';
 }
 
 /* ---------- admin ---------- */
@@ -490,12 +584,46 @@ function init() {
     showView('search');
   });
 
+  /* --- boshqaruv paneliga maxfiy kirish --- */
+  document.querySelector('.brand-mark').addEventListener('click', handleLogoTap);
+
+  qs('admin-exit').addEventListener('click', exitAdmin);
+
+  qs('pin-cancel').addEventListener('click', () => closeModal(qs('modal-pin')));
+
+  qs('pin-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (qs('pin').value.trim() !== ADMIN_PIN) {
+      setFieldError('pin', "PIN noto'g'ri");
+      qs('pin').value = '';
+      return;
+    }
+    setFieldError('pin', '');
+    setAdminUnlocked(true);
+    closeModal(qs('modal-pin'));
+    showView('admin');
+    showToast('Boshqaruv paneli ochildi');
+  });
+
+  qs('pin').addEventListener('input', () => setFieldError('pin', ''));
+
+  /* havolada #admin bo'lsa — panelga kirishga urinadi */
+  if (location.hash === '#admin') requestAdmin();
+  window.addEventListener('hashchange', () => {
+    if (location.hash === '#admin') requestAdmin();
+  });
+
+  qs('region-pill').addEventListener('click', () => {
+    renderRegionOptions();
+    qs('modal-region').classList.add('open');
+  });
+
   qs('quick-order-btn').addEventListener('click', () => openOrderModal(null));
   qs('orders-new-btn').addEventListener('click', () => openOrderModal(null));
 
   qs('filter-query').addEventListener('input', (e) => { state.filters.query = e.target.value; renderSearchResults(); });
   qs('filter-category').addEventListener('change', (e) => { state.filters.category = e.target.value; renderSearchResults(); });
-  qs('filter-region').addEventListener('change', (e) => { state.filters.region = e.target.value; renderSearchResults(); });
+  qs('filter-region').addEventListener('change', (e) => { setRegion(e.target.value); renderSearchResults(); });
 
   qs('order-form').addEventListener('submit', handleOrderSubmit);
 
@@ -522,6 +650,12 @@ function init() {
     const action = el.dataset.action;
     if (action === 'open-profile') openProfileModal(el.dataset.id);
     if (action === 'go-category') goToSearchWithCategory(el.dataset.key);
+    if (action === 'pick-region') {
+      setRegion(el.dataset.region);
+      renderRegionOptions();
+      closeModal(qs('modal-region'));
+      showToast(el.dataset.region ? el.dataset.region + ' tanlandi' : 'Barcha hududlar');
+    }
     if (action === 'open-order') openOrderModal(el.dataset.id);
     if (action === 'remove-order') removeOrder(el.dataset.id);
   });
