@@ -1,0 +1,18 @@
+[Unit]
+Description=UstaTop PocketBase
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/projects/ustatop/pb
+ExecStart=/root/projects/ustatop/pb/pocketbase serve --http=127.0.0.1:8090
+Restart=always
+RestartSec=5
+
+# PocketBase faqat localhost'da tinglaydi — tashqariga nginx chiqaradi
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
