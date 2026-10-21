@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UstaTop — ustalar va mijozlar platformasi</title>
+<meta name="description" content="UstaTop — santexnik, elektrik, mebel ustasi va boshqa mutaxassislarni toping, narx va sharhlarni ko'ring, onlayn buyurtma bering.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="logo"><span class="logo-badge">🛠️</span>UstaTop</span>
+      <span class="tagline">Ishonchli ustalar — bir joyda</span>
+    </div>
+  </header>
+
+  <main class="view-wrap">
+
+    <!-- BOSH SAHIFA -->
+    <section id="view-home" class="view active">
+      <div class="hero">
+        <h1>Ustangizni toping</h1>
+        <p>Santexnik, elektrik, mebel ustasi va boshqa mutaxassislarni qidiring</p>
+        <form id="home-search-form" class="search-box">
+          <input type="text" id="home-search-input" placeholder="Masalan: santexnik...">
+          <button type="submit">Qidirish</button>
+        </form>
+      </div>
+
+      <h2 class="section-title">Xizmat turlari</h2>
+      <div id="category-grid" class="category-grid"></div>
+
+      <h2 class="section-title">Mashhur ustalar</h2>
+      <div id="featured-list" class="usta-list"></div>
+
+      <button id="quick-order-btn" class="btn btn-primary btn-block">Tezkor buyurtma berish</button>
+    </section>
+
+    <!-- QIDIRUV / USTALAR RO'YXATI -->
+    <section id="view-search" class="view">
+      <h2 class="section-title">Ustalar</h2>
+      <div class="filters">
+        <input type="text" id="filter-query" placeholder="Ism yoki xizmat bo'yicha qidirish...">
+        <select id="filter-category">
+          <option value="">Barcha xizmatlar</option>
+        </select>
+        <select id="filter-region">
+          <option value="">Barcha hududlar</option>
+        </select>
+      </div>
+      <div id="search-results" class="usta-list"></div>
+    </section>
+
+    <!-- BUYURTMALARIM -->
+    <section id="view-orders" class="view">
+      <h2 class="section-title">Buyurtmalarim</h2>
+      <div id="orders-list" class="orders-list"></div>
+      <button id="orders-new-btn" class="btn btn-primary btn-block">Yangi buyurtma berish</button>
+    </section>
+
+    <!-- BOSHQARUV PANELI (ADMIN) -->
+    <section id="view-admin" class="view">
+      <h2 class="section-title">Boshqaruv paneli</h2>
+      <p class="admin-note">Demo rejim: haqiqiy loyihada bu panel faqat administratorlar uchun himoyalangan bo'ladi.</p>
+      <div id="admin-stats" class="admin-stats"></div>
+      <div id="admin-orders" class="admin-orders"></div>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-view="home"><b>⌂</b><span>Bosh sahifa</span></button>
+    <button class="nav-btn" data-view="search"><b>⌕</b><span>Ustalar</span></button>
+    <button class="nav-btn" data-view="orders"><b>🧾</b><span>Buyurtmalarim</span></button>
+    <button class="nav-btn" data-view="admin"><b>⚙</b><span>Admin</span></button>
+  </nav>
+</div>
+
+<!-- USTA PROFILI MODAL -->
+<div class="modal" id="modal-profile">
+  <div class="sheet">
+    <button class="close" data-close-modal>×</button>
+    <div id="profile-content"></div>
+  </div>
+</div>
+
+<!-- BUYURTMA BERISH MODAL -->
+<div class="modal" id="modal-order">
+  <div class="sheet">
+    <button class="close" data-close-modal>×</button>
+    <h3>Buyurtma berish</h3>
+    <form id="order-form" novalidate>
+      <input type="hidden" id="order-usta-id">
+      <div id="order-usta-info" class="order-usta-info"></div>
+
+      <label for="order-category">Xizmat turi</label>
+      <select id="order-category" required></select>
+      <small class="field-error" id="err-order-category"></small>
+
+      <label for="order-name">Ism familiyangiz</label>
+      <input type="text" id="order-name" placeholder="Ism Familiya" required>
+      <small class="field-error" id="err-order-name"></small>
+
+      <label for="order-phone">Telefon raqamingiz</label>
+      <input type="tel" id="order-phone" placeholder="+998 90 123 45 67" required>
+      <small class="field-error" id="err-order-phone"></small>
+
+      <label for="order-region">Hudud</label>
+      <select id="order-region" required></select>
+      <small class="field-error" id="err-order-region"></small>
+
+      <label for="order-comment">Izoh (ixtiyoriy)</label>
+      <textarea id="order-comment" rows="3" placeholder="Muammoni qisqacha tasvirlab bering..."></textarea>
+
+      <button type="submit" class="btn btn-primary btn-block">Buyurtmani yuborish</button>
+    </form>
+  </div>
+</div>
+
+<!-- TASDIQLASH MODALI -->
+<div class="modal" id="modal-confirm">
+  <div class="sheet sheet-confirm">
+    <p id="confirm-message"></p>
+    <div class="confirm-actions">
+      <button class="btn btn-secondary" id="confirm-cancel">Bekor qilish</button>
+      <button class="btn btn-danger" id="confirm-ok">O'chirish</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
