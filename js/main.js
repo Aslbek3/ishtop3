@@ -203,6 +203,18 @@ const state = {
 /* ---------- helpers ---------- */
 function qs(id) { return document.getElementById(id); }
 
+/* HTML'ga qo'yiladigan har qanday ma'lumot shu yerdan o'tadi.
+   Backend ulangach foydalanuvchi matni boshqalarga ko'rinadi — tozalanmasa
+   kimdir <script> yozib qo'yishi mumkin (XSS). */
+function esc(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function categoryLabel(key) {
   const c = CATEGORIES.find((c) => c.key === key);
   return c ? c.label : key;
@@ -319,14 +331,14 @@ function pickHomeCategory(key) {
 
 function ustaCardHtml(usta) {
   return `
-    <div class="usta-card" data-action="open-profile" data-id="${usta.id}">
-      <div class="usta-avatar" style="background:${avatarColor(usta.id)}">${initials(usta.name)}</div>
+    <div class="usta-card" data-action="open-profile" data-id="${esc(usta.id)}">
+      <div class="usta-avatar" style="background:${avatarColor(usta.id)}">${esc(initials(usta.name))}</div>
       <div class="usta-info">
-        <div class="usta-name">${usta.name}</div>
-        <div class="usta-meta">${categoryLabel(usta.categoryKey)} · ${usta.region}</div>
+        <div class="usta-name">${esc(usta.name)}</div>
+        <div class="usta-meta">${esc(categoryLabel(usta.categoryKey))} · ${esc(usta.region)}</div>
         <div class="usta-rating">${ratingLine(usta.rating, usta.reviewsCount)}</div>
       </div>
-      <div class="usta-price">${usta.price}</div>
+      <div class="usta-price">${esc(usta.price)}</div>
     </div>
   `;
 }
@@ -383,8 +395,8 @@ function setRegion(region) {
 
 /* ---------- search ---------- */
 function populateFilterSelects() {
-  const catOptions = CATEGORIES.map((c) => `<option value="${c.key}">${c.label}</option>`).join('');
-  const regOptions = REGIONS.map((r) => `<option value="${r}">${r}</option>`).join('');
+  const catOptions = CATEGORIES.map((c) => `<option value="${esc(c.key)}">${esc(c.label)}</option>`).join('');
+  const regOptions = REGIONS.map((r) => `<option value="${esc(r)}">${esc(r)}</option>`).join('');
   qs('filter-category').insertAdjacentHTML('beforeend', catOptions);
   qs('filter-region').insertAdjacentHTML('beforeend', regOptions);
 }
@@ -447,9 +459,9 @@ function renderProfile() {
     roleBlock = `
       <div class="profile-block">
         <h4>Xizmatim</h4>
-        <p>${categoryLabel(acc.categoryKey)} · ${acc.region}</p>
-        <p class="muted">${acc.price || 'Narx ko‘rsatilmagan'}</p>
-        ${acc.bio ? `<p class="muted">${acc.bio}</p>` : ''}
+        <p>${esc(categoryLabel(acc.categoryKey))} · ${esc(acc.region)}</p>
+        <p class="muted">${esc(acc.price || 'Narx ko‘rsatilmagan')}</p>
+        ${acc.bio ? `<p class="muted">${esc(acc.bio)}</p>` : ''}
       </div>
       <div class="profile-block">
         <h4>Yo‘nalishimdagi buyurtmalar</h4>
@@ -469,17 +481,17 @@ function renderProfile() {
 
   box.innerHTML = `
     <div class="profile-card">
-      <div class="usta-avatar" style="background:${avatarColor(acc.phone)}">${initials(acc.name)}</div>
+      <div class="usta-avatar" style="background:${avatarColor(acc.phone)}">${esc(initials(acc.name))}</div>
       <div class="profile-id">
-        <b>${acc.name}</b>
-        <span class="muted">${acc.phone}</span>
+        <b>${esc(acc.name)}</b>
+        <span class="muted">${esc(acc.phone)}</span>
         <span class="role-badge">${role.icon} ${role.label}</span>
       </div>
     </div>
     ${roleBlock}
     <div class="profile-block">
       <h4>Hudud</h4>
-      <p>${acc.region}</p>
+      <p>${esc(acc.region)}</p>
     </div>
     ${isAdminUnlocked() ? '<button type="button" class="btn btn-secondary btn-block" data-action="go-admin">⚙ Boshqaruv paneli</button>' : ''}
     <button type="button" class="btn btn-secondary btn-block" data-action="logout">Akkauntdan chiqish</button>
@@ -579,27 +591,27 @@ function openProfileModal(ustaId) {
   if (!usta) return;
   qs('profile-content').innerHTML = `
     <div class="profile-header">
-      <div class="usta-avatar" style="background:${avatarColor(usta.id)}">${initials(usta.name)}</div>
+      <div class="usta-avatar" style="background:${avatarColor(usta.id)}">${esc(initials(usta.name))}</div>
       <div>
-        <h3>${usta.name}</h3>
-        <div class="usta-meta">${categoryLabel(usta.categoryKey)} · ${usta.region}</div>
+        <h3>${esc(usta.name)}</h3>
+        <div class="usta-meta">${esc(categoryLabel(usta.categoryKey))} · ${esc(usta.region)}</div>
         <div class="usta-rating">${ratingLine(usta.rating, usta.reviewsCount)}</div>
       </div>
     </div>
 
     <div class="profile-section">
       <h4>Haqida</h4>
-      <p>${usta.bio}</p>
+      <p>${esc(usta.bio)}</p>
     </div>
 
     <div class="profile-section">
       <h4>Narxi</h4>
-      <p>${usta.price}</p>
+      <p>${esc(usta.price)}</p>
     </div>
 
     <div class="profile-section">
       <h4>Telefon</h4>
-      <p><a href="tel:${usta.phone.replace(/\s/g, '')}">${usta.phone}</a></p>
+      <p><a href="tel:${esc(usta.phone.replace(/\s/g, ''))}">${esc(usta.phone)}</a></p>
     </div>
 
     <div class="profile-section">
@@ -616,27 +628,27 @@ function openProfileModal(ustaId) {
       <h4>Mijoz fikrlari</h4>
       ${usta.reviews.map((r) => `
         <div class="review-item">
-          <div class="review-name">${r.name}</div>
+          <div class="review-name">${esc(r.name)}</div>
           <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
-          <div class="review-text">${r.text}</div>
+          <div class="review-text">${esc(r.text)}</div>
         </div>
       `).join('')}
     </div>
 
-    <button class="btn btn-primary btn-block" data-action="open-order" data-id="${usta.id}">Buyurtma berish</button>
+    <button class="btn btn-primary btn-block" data-action="open-order" data-id="${esc(usta.id)}">Buyurtma berish</button>
   `;
   qs('modal-profile').classList.add('open');
 }
 
 /* ---------- order modal ---------- */
 function populateAuthSelects() {
-  qs('auth-region').insertAdjacentHTML('beforeend', REGIONS.map((r) => `<option value="${r}">${r}</option>`).join(''));
-  qs('auth-category').insertAdjacentHTML('beforeend', CATEGORIES.map((c) => `<option value="${c.key}">${c.label}</option>`).join(''));
+  qs('auth-region').insertAdjacentHTML('beforeend', REGIONS.map((r) => `<option value="${esc(r)}">${esc(r)}</option>`).join(''));
+  qs('auth-category').insertAdjacentHTML('beforeend', CATEGORIES.map((c) => `<option value="${esc(c.key)}">${esc(c.label)}</option>`).join(''));
 }
 
 function populateOrderSelects() {
-  qs('order-category').innerHTML = CATEGORIES.map((c) => `<option value="${c.key}">${c.label}</option>`).join('');
-  qs('order-region').innerHTML = '<option value="">Hududni tanlang</option>' + REGIONS.map((r) => `<option value="${r}">${r}</option>`).join('');
+  qs('order-category').innerHTML = CATEGORIES.map((c) => `<option value="${esc(c.key)}">${esc(c.label)}</option>`).join('');
+  qs('order-region').innerHTML = '<option value="">Hududni tanlang</option>' + REGIONS.map((r) => `<option value="${esc(r)}">${esc(r)}</option>`).join('');
 }
 
 const ORDER_FIELD_IDS = ['order-category', 'order-name', 'order-phone', 'order-region'];
@@ -680,7 +692,7 @@ function openOrderModal(ustaId) {
   const usta = ustaId ? findUsta(ustaId) : null;
   qs('order-usta-id').value = usta ? usta.id : '';
   qs('order-usta-info').textContent = usta
-    ? `Tanlangan usta: ${usta.name} (${categoryLabel(usta.categoryKey)})`
+    ? `Tanlangan usta: ${esc(usta.name)} (${esc(categoryLabel(usta.categoryKey))})`
     : "Mutaxassis tanlanmagan — buyurtmangizni ko'rib, mos ustani biz tanlaymiz.";
   qs('order-category').value = usta ? usta.categoryKey : CATEGORIES[0].key;
   qs('order-region').value = usta ? usta.region : '';
@@ -730,7 +742,7 @@ function renderOrdersList() {
           <span class="order-service">${categoryLabel(o.categoryKey)}</span>
           <span class="badge badge-${o.status}">${STATUS_LABELS[o.status]}</span>
         </div>
-        <div class="order-meta">${o.ustaName ? 'Usta: ' + o.ustaName : 'Usta tanlanmoqda'} · ${o.region}</div>
+        <div class="order-meta">${o.ustaName ? 'Usta: ' + esc(o.ustaName) : 'Usta tanlanmoqda'} · ${esc(o.region)}</div>
         <div class="order-date">${formatDate(o.createdAt)}</div>
       </div>
     `).join('')
@@ -759,21 +771,21 @@ function renderAdmin() {
           <span class="order-service">${categoryLabel(o.categoryKey)}</span>
           <span class="order-date">${formatDate(o.createdAt)}</span>
         </div>
-        <div class="order-meta">${o.name} · ${o.phone}</div>
-        <div class="order-meta">${o.region}${o.comment ? ' · ' + o.comment : ''}</div>
+        <div class="order-meta">${esc(o.name)} · ${esc(o.phone)}</div>
+        <div class="order-meta">${esc(o.region)}${o.comment ? ' · ' + esc(o.comment) : ''}</div>
 
         <div class="field-label">Holat</div>
-        <select data-role="status-select" data-order-id="${o.id}">
+        <select data-role="status-select" data-order-id="${esc(o.id)}">
           ${Object.entries(STATUS_LABELS).map(([key, label]) => `<option value="${key}" ${o.status === key ? 'selected' : ''}>${label}</option>`).join('')}
         </select>
 
         <div class="field-label">Ustaga biriktirish</div>
-        <select data-role="assign-select" data-order-id="${o.id}">
+        <select data-role="assign-select" data-order-id="${esc(o.id)}">
           <option value="">Tanlanmagan</option>
-          ${matchingUstalar.map((u) => `<option value="${u.id}" ${o.ustaId === u.id ? 'selected' : ''}>${u.name}</option>`).join('')}
+          ${matchingUstalar.map((u) => `<option value="${esc(u.id)}" ${o.ustaId === u.id ? 'selected' : ''}>${esc(u.name)}</option>`).join('')}
         </select>
 
-        <button class="remove-btn" data-action="remove-order" data-id="${o.id}">Buyurtmani o'chirish</button>
+        <button class="remove-btn" data-action="remove-order" data-id="${esc(o.id)}">Buyurtmani o'chirish</button>
       </div>
     `;
   }).join('') : '<div class="empty-state">Hali buyurtmalar yo‘q.</div>';
