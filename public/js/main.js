@@ -1,17 +1,37 @@
 /* ===== UstaTop — demo MVP (frontend-only, localStorage) ===== */
 
+/* To'liq katalog — barcha yo'nalishlar.
+   popular: true bo'lganlari bosh sahifada plitka sifatida chiqadi,
+   qolganlari "Boshqa" bo'limida (to'liq katalog) ko'rinadi. */
 const CATEGORIES = [
-  { key: 'santexnik', label: 'Santexnik', icon: '🚰' },
-  { key: 'elektrik', label: 'Elektrik', icon: '💡' },
-  { key: 'konditsioner', label: 'Konditsioner', icon: '❄️' },
-  { key: 'texnika', label: 'Texnika', icon: '🧺' },
-  { key: 'mebel', label: 'Mebel', icon: '🪑' },
-  { key: 'boyoqchi', label: "Bo'yoqchi", icon: '🖌️' },
-  { key: 'boshqa', label: 'Boshqa', icon: '➕' },
+  { key: 'santexnik',    label: 'Santexnik',       icon: '🚰', popular: true },
+  { key: 'elektrik',     label: 'Elektrik',        icon: '💡', popular: true },
+  { key: 'konditsioner', label: 'Konditsioner',    icon: '❄️', popular: true },
+  { key: 'texnika',      label: 'Texnika',         icon: '🧺', popular: true },
+  { key: 'mebel',        label: 'Mebel',           icon: '🪑', popular: true },
+  { key: 'boyoqchi',     label: "Bo'yoqchi",       icon: '🖌️', popular: true },
+
+  { key: 'qurilish',     label: "Qurilish-ta'mir", icon: '🧱' },
+  { key: 'kafel',        label: 'Kafelchi',        icon: '◼️' },
+  { key: 'gaz',          label: 'Gaz uskunalari',  icon: '🔥' },
+  { key: 'eshik',        label: 'Eshik-deraza',    icon: '🚪' },
+  { key: 'tom',          label: 'Tom yopish',      icon: '🏠' },
+  { key: 'payvand',      label: 'Payvandchi',      icon: '⚙️' },
+  { key: 'tozalash',     label: 'Tozalash',        icon: '🧹' },
+  { key: 'kochirish',    label: 'Yuk ko‘chirish',  icon: '🚚' },
+  { key: 'bogbon',       label: 'Bog‘bon',         icon: '🌿' },
+  { key: 'kompyuter',    label: 'Kompyuter',       icon: '💻' },
 ];
 
-/* Bosh sahifadagi plitkalar: "Barchasi" + barcha xizmat turlari (4x2 grid) */
-const HOME_TILES = [{ key: '', label: 'Barchasi', icon: '🧰' }, ...CATEGORIES];
+/* "Boshqa" plitkasining maxsus kaliti — xizmat turi emas, katalogni ochadi */
+const CATALOG_KEY = '__catalog__';
+
+/* Bosh sahifadagi 8 plitka: Barchasi + 6 mashhur + Boshqa (4x2 grid) */
+const HOME_TILES = [
+  { key: '', label: 'Barchasi', icon: '🧰' },
+  ...CATEGORIES.filter((c) => c.popular),
+  { key: CATALOG_KEY, label: 'Boshqa', icon: '➕' },
+];
 
 const REGIONS = [
   'Toshkent shahri',
@@ -56,10 +76,10 @@ const USTALAR = [
   { id: 'u10', name: 'Sanjar Ibragimov', categoryKey: 'konditsioner', region: "Farg'ona", rating: 4.1, reviewsCount: 9, price: "90 000 – 180 000 so'm", phone: '+998 97 012 34 56', bio: 'Sovutish tizimlarini diagnostika va ta‘mirlash.', reviews: [
     { name: 'Lola', stars: 4, text: 'Tez keldi, muammoni topdi.' },
   ] },
-  { id: 'u11', name: 'Farrux Alimov', categoryKey: 'boshqa', region: 'Toshkent shahri', rating: 4.9, reviewsCount: 76, price: 'Kelishilgan narxda', phone: '+998 91 123 45 67', bio: "Kapital va kosmetik ta'mirlash, old-key ishlar.", reviews: [
+  { id: 'u11', name: 'Farrux Alimov', categoryKey: 'qurilish', region: 'Toshkent shahri', rating: 4.9, reviewsCount: 76, price: 'Kelishilgan narxda', phone: '+998 91 123 45 67', bio: "Kapital va kosmetik ta'mirlash, old-key ishlar.", reviews: [
     { name: 'Umida', stars: 5, text: 'Butun kvartirani ajoyib qilib berdi.' },
   ] },
-  { id: 'u12', name: 'Jamshid Qurbonov', categoryKey: 'boshqa', region: 'Samarqand', rating: 4.0, reviewsCount: 11, price: 'Kelishilgan narxda', phone: '+998 93 234 56 78', bio: 'Devor, pol, shift ishlarini bajaradi.', reviews: [
+  { id: 'u12', name: 'Jamshid Qurbonov', categoryKey: 'qurilish', region: 'Samarqand', rating: 4.0, reviewsCount: 11, price: 'Kelishilgan narxda', phone: '+998 93 234 56 78', bio: 'Devor, pol, shift ishlarini bajaradi.', reviews: [
     { name: 'Sevara', stars: 4, text: 'Ishni belgilangan vaqtda tugatdi.' },
   ] },
   { id: 'u13', name: 'Ulug‘bek Tursunov', categoryKey: 'texnika', region: 'Toshkent shahri', rating: 4.7, reviewsCount: 41, price: "50 000 – 120 000 so'm", phone: '+998 90 345 67 12', bio: "Kir yuvish mashinasi, muzlatgich va oshxona texnikasini ta'mirlash.", reviews: [
@@ -68,6 +88,18 @@ const USTALAR = [
   ] },
   { id: 'u14', name: 'Doniyor Ismoilov', categoryKey: 'texnika', region: 'Buxoro', rating: 4.3, reviewsCount: 16, price: "40 000 – 100 000 so'm", phone: '+998 93 456 78 23', bio: 'Maishiy texnika diagnostikasi va ta‘mirlash, uyga chiqib xizmat ko‘rsatish.', reviews: [
     { name: 'Dilafruz', stars: 4, text: 'Uyga kelib tuzatib berdi.' },
+  ] },
+  { id: 'u15', name: 'Akmal Yo‘ldoshev', categoryKey: 'kafel', region: 'Toshkent shahri', rating: 4.6, reviewsCount: 29, price: "35 000 so'm/kv.m", phone: '+998 90 234 56 34', bio: 'Hammom va oshxona kafel ishlari, keramogranit yotqizish.', reviews: [
+    { name: 'Shoira', stars: 5, text: 'Kafelni juda tekis yotqizdi.' },
+  ] },
+  { id: 'u16', name: 'Shavkat Ergashev', categoryKey: 'gaz', region: 'Samarqand', rating: 4.5, reviewsCount: 23, price: "60 000 – 140 000 so'm", phone: '+998 91 345 67 45', bio: "Gaz plitasi va kolonka o'rnatish, xavfsizlik tekshiruvi.", reviews: [
+    { name: 'Rustam', stars: 5, text: 'Xavfsizlikni puxta tekshirdi.' },
+  ] },
+  { id: 'u17', name: 'Nilufar Ahmedova', categoryKey: 'tozalash', region: 'Toshkent shahri', rating: 4.9, reviewsCount: 87, price: "150 000 so'mdan", phone: '+998 93 456 78 56', bio: "Kvartira va ofis tozalash, ta'mirdan keyingi tozalash xizmati.", reviews: [
+    { name: 'Aziza', stars: 5, text: 'Uy chaqnab ketdi!' },
+  ] },
+  { id: 'u18', name: 'Otabek Rasulov', categoryKey: 'kochirish', region: 'Toshkent viloyati', rating: 4.4, reviewsCount: 35, price: "200 000 so'mdan", phone: '+998 94 567 89 67', bio: "Uy va ofis ko'chirish, yuk ortish-tushirish, yuk mashinasi bilan.", reviews: [
+    { name: 'Jasur', stars: 4, text: 'Ehtiyotkorlik bilan ko‘chirdi.' },
   ] },
 ];
 
@@ -128,9 +160,44 @@ function handleLogoTap() {
   }
 }
 
+/* ---------- Akkaunt (mijoz / usta / admin) ----------
+   DIQQAT: demo rejimda parol so'ralmaydi va ma'lumotlar faqat shu
+   brauzerda saqlanadi. Jonli versiyada ro'yxatdan o'tish, parol va
+   ma'lumotlar bazasi server tomonida bo'lishi shart. */
+const ACCOUNT_KEY = 'ustatop_account';
+const USTA_REG_KEY = 'ustatop_ustalar';
+
+const ROLES = {
+  mijoz: { label: 'Mijoz', icon: '🙋', note: 'Usta qidiraman va buyurtma beraman' },
+  usta:  { label: 'Usta',  icon: '🛠️', note: 'Xizmat ko‘rsataman, buyurtma qabul qilaman' },
+};
+
+function readJson(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) { return fallback; }
+}
+
+function writeJson(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* xotira to'la bo'lsa ham ishlashda davom etadi */ }
+}
+
+function getAccount() { return readJson(ACCOUNT_KEY, null); }
+function saveAccount(acc) { writeJson(ACCOUNT_KEY, acc); }
+function clearAccount() { try { localStorage.removeItem(ACCOUNT_KEY); } catch (e) {} }
+
+function getRegisteredUstalar() { return readJson(USTA_REG_KEY, []); }
+function saveRegisteredUstalar(list) { writeJson(USTA_REG_KEY, list); }
+
+/* Demo ustalar + ro'yxatdan o'tgan ustalar birgalikda */
+function allUstalar() { return USTALAR.concat(getRegisteredUstalar()); }
+
 const state = {
   view: 'home',
-  filters: { query: '', category: '', region: '' },
+  homeCategory: '',                                   /* bosh sahifa filtri — qidiruvga ta'sir qilmaydi */
+  filters: { query: '', category: '', region: '' },   /* "Ustalar" bo'limi filtri */
+  authRole: 'mijoz',
 };
 
 /* ---------- helpers ---------- */
@@ -141,7 +208,7 @@ function categoryLabel(key) {
   return c ? c.label : key;
 }
 
-function findUsta(id) { return USTALAR.find((u) => u.id === id); }
+function findUsta(id) { return allUstalar().find((u) => u.id === id); }
 
 function initials(name) {
   return name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
@@ -227,16 +294,27 @@ function showView(name) {
   if (name === 'search') renderSearchResults();
   if (name === 'orders') renderOrdersList();
   if (name === 'admin') renderAdmin();
+  if (name === 'catalog') renderCatalog();
+  if (name === 'profile') renderProfile();
 }
 
 /* ---------- home ---------- */
 function renderCategoryGrid() {
   qs('category-grid').innerHTML = HOME_TILES.map((c) => `
-    <div class="category-card${c.key === state.filters.category ? ' active' : ''}" data-action="go-category" data-key="${c.key}">
+    <div class="category-card${c.key === state.homeCategory && c.key !== CATALOG_KEY ? ' active' : ''}" data-action="home-category" data-key="${c.key}">
       <span class="icon">${c.icon}</span>
       <span class="label">${c.label}</span>
     </div>
   `).join('');
+}
+
+/* Bosh sahifadagi plitka bosilganda — shu sahifada filtrlanadi,
+   "Boshqa" esa to'liq katalog bo'limini ochadi. */
+function pickHomeCategory(key) {
+  if (key === CATALOG_KEY) { showView('catalog'); return; }
+  state.homeCategory = key;
+  renderCategoryGrid();
+  renderFeatured();
 }
 
 function ustaCardHtml(usta) {
@@ -254,12 +332,37 @@ function ustaCardHtml(usta) {
 }
 
 function renderFeatured() {
-  const pool = state.filters.region ? USTALAR.filter((u) => u.region === state.filters.region) : USTALAR;
-  const top = [...pool].sort((a, b) => b.rating - a.rating).slice(0, 4);
+  const cat = state.homeCategory;
+  const region = state.filters.region;
+
+  let pool = allUstalar();
+  if (cat) pool = pool.filter((u) => u.categoryKey === cat);
+  if (region) pool = pool.filter((u) => u.region === region);
+
+  const sorted = [...pool].sort((a, b) => b.rating - a.rating);
+  const top = cat ? sorted : sorted.slice(0, 4);   /* filtrsiz holatda faqat eng yaxshi 4 ta */
+
+  qs('featured-title').textContent = cat ? categoryLabel(cat) + ' ustalari' : 'Tavsiya etilgan ustalar';
   qs('featured-list').innerHTML = top.length
     ? top.map(ustaCardHtml).join('')
-    : '<div class="empty-state">Bu hududda hozircha usta yo‘q.</div>';
+    : `<div class="empty-state">${region ? 'Bu hududda' : 'Bu yo‘nalishda'} hozircha usta yo‘q.</div>`;
   qs('featured-count').textContent = top.length ? top.length + ' ta' : '';
+}
+
+/* ---------- to'liq katalog ("Boshqa" bo'limi) ---------- */
+function renderCatalog() {
+  const ustalar = allUstalar();
+  qs('catalog-list').innerHTML = CATEGORIES.map((c) => {
+    const count = ustalar.filter((u) => u.categoryKey === c.key).length;
+    return `
+      <button type="button" class="catalog-row" data-action="catalog-pick" data-key="${c.key}">
+        <span class="catalog-icon">${c.icon}</span>
+        <span class="catalog-label">${c.label}</span>
+        <span class="catalog-count">${count} ta usta</span>
+      </button>
+    `;
+  }).join('');
+  qs('catalog-count').textContent = CATEGORIES.length + ' yo‘nalish';
 }
 
 /* ---------- hudud tanlash ---------- */
@@ -289,7 +392,7 @@ function populateFilterSelects() {
 function renderSearchResults() {
   const { query, category, region } = state.filters;
   const q = query.trim().toLowerCase();
-  const results = USTALAR.filter((u) => {
+  const results = allUstalar().filter((u) => {
     if (category && u.categoryKey !== category) return false;
     if (region && u.region !== region) return false;
     if (q && !(u.name.toLowerCase().includes(q) || categoryLabel(u.categoryKey).toLowerCase().includes(q))) return false;
@@ -306,8 +409,168 @@ function goToSearchWithCategory(key) {
   state.filters = { query: '', category: key, region: state.filters.region };
   qs('filter-query').value = '';
   qs('filter-category').value = key;
-  renderCategoryGrid();
   showView('search');
+}
+
+/* ---------- Profil ekrani ---------- */
+function renderProfile() {
+  const acc = getAccount();
+  const box = qs('profile-view');
+
+  if (!acc) {
+    box.innerHTML = `
+      <div class="auth-intro">
+        <div class="auth-emoji">👤</div>
+        <h3>Akkauntga kiring</h3>
+        <p>Buyurtmalaringizni saqlash yoki usta sifatida xizmat ko‘rsatish uchun akkaunt oching.</p>
+      </div>
+      <div class="role-cards">
+        ${Object.entries(ROLES).map(([key, r]) => `
+          <button type="button" class="role-card" data-action="open-auth" data-role="${key}">
+            <span class="role-icon">${r.icon}</span>
+            <b>${r.label}</b>
+            <small>${r.note}</small>
+          </button>
+        `).join('')}
+      </div>
+      <p class="admin-note">Demo rejim: parol so‘ralmaydi, ma’lumotlar faqat shu brauzerda saqlanadi.</p>
+    `;
+    return;
+  }
+
+  const role = ROLES[acc.role] || ROLES.mijoz;
+  const myOrders = getOrders().filter((o) => o.phone === acc.phone);
+
+  let roleBlock = '';
+  if (acc.role === 'usta') {
+    const incoming = getOrders().filter((o) => o.categoryKey === acc.categoryKey);
+    roleBlock = `
+      <div class="profile-block">
+        <h4>Xizmatim</h4>
+        <p>${categoryLabel(acc.categoryKey)} · ${acc.region}</p>
+        <p class="muted">${acc.price || 'Narx ko‘rsatilmagan'}</p>
+        ${acc.bio ? `<p class="muted">${acc.bio}</p>` : ''}
+      </div>
+      <div class="profile-block">
+        <h4>Yo‘nalishimdagi buyurtmalar</h4>
+        <p><b>${incoming.length}</b> ta buyurtma</p>
+        <p class="muted">Demo rejimda buyurtmalar administrator tomonidan ustaga biriktiriladi.</p>
+      </div>
+    `;
+  } else {
+    roleBlock = `
+      <div class="profile-block">
+        <h4>Buyurtmalarim</h4>
+        <p><b>${myOrders.length}</b> ta buyurtma</p>
+        <button type="button" class="link-btn" data-action="go-orders">Buyurtmalarni ko‘rish</button>
+      </div>
+    `;
+  }
+
+  box.innerHTML = `
+    <div class="profile-card">
+      <div class="usta-avatar" style="background:${avatarColor(acc.phone)}">${initials(acc.name)}</div>
+      <div class="profile-id">
+        <b>${acc.name}</b>
+        <span class="muted">${acc.phone}</span>
+        <span class="role-badge">${role.icon} ${role.label}</span>
+      </div>
+    </div>
+    ${roleBlock}
+    <div class="profile-block">
+      <h4>Hudud</h4>
+      <p>${acc.region}</p>
+    </div>
+    ${isAdminUnlocked() ? '<button type="button" class="btn btn-secondary btn-block" data-action="go-admin">⚙ Boshqaruv paneli</button>' : ''}
+    <button type="button" class="btn btn-secondary btn-block" data-action="logout">Akkauntdan chiqish</button>
+  `;
+}
+
+/* ---------- Kirish / ro'yxatdan o'tish modali ---------- */
+function openAuthModal(role) {
+  state.authRole = role in ROLES ? role : 'mijoz';
+  renderAuthForm();
+  qs('modal-auth').classList.add('open');
+}
+
+function renderAuthForm() {
+  const isUsta = state.authRole === 'usta';
+  qs('auth-title').textContent = ROLES[state.authRole].label + ' sifatida kirish';
+  qs('auth-usta-fields').style.display = isUsta ? 'block' : 'none';
+  qs('auth-category').required = isUsta;
+
+  document.querySelectorAll('[data-role-tab]').forEach((b) => {
+    b.classList.toggle('active', b.dataset.roleTab === state.authRole);
+  });
+}
+
+const AUTH_FIELD_IDS = ['auth-name', 'auth-phone', 'auth-region', 'auth-category'];
+
+function validateAuthForm() {
+  let ok = true;
+  AUTH_FIELD_IDS.forEach((id) => setFieldError(id, ''));
+
+  if (!qs('auth-name').value.trim()) { setFieldError('auth-name', 'Ismingizni kiriting'); ok = false; }
+
+  const phone = qs('auth-phone').value.trim();
+  if (!phone) { setFieldError('auth-phone', 'Telefon raqamingizni kiriting'); ok = false; }
+  else if (phone.replace(/\D/g, '').length < 9) { setFieldError('auth-phone', "Raqam to'liq emas"); ok = false; }
+
+  if (!qs('auth-region').value) { setFieldError('auth-region', 'Hududni tanlang'); ok = false; }
+
+  if (state.authRole === 'usta' && !qs('auth-category').value) {
+    setFieldError('auth-category', 'Xizmat turini tanlang'); ok = false;
+  }
+  return ok;
+}
+
+function handleAuthSubmit(e) {
+  e.preventDefault();
+  if (!validateAuthForm()) return;
+
+  const acc = {
+    role: state.authRole,
+    name: qs('auth-name').value.trim(),
+    phone: qs('auth-phone').value.trim(),
+    region: qs('auth-region').value,
+  };
+
+  if (state.authRole === 'usta') {
+    acc.categoryKey = qs('auth-category').value;
+    acc.price = qs('auth-price').value.trim();
+    acc.bio = qs('auth-bio').value.trim();
+
+    /* Usta ro'yxatga qo'shiladi va umumiy ro'yxatda ko'rinadi */
+    const list = getRegisteredUstalar().filter((u) => u.phone !== acc.phone);
+    acc.ustaId = 'r' + Date.now();
+    list.push({
+      id: acc.ustaId,
+      name: acc.name,
+      categoryKey: acc.categoryKey,
+      region: acc.region,
+      rating: 0,
+      reviewsCount: 0,
+      price: acc.price || 'Kelishilgan narxda',
+      phone: acc.phone,
+      bio: acc.bio || 'Yangi usta — hozircha sharhlar yo‘q.',
+      reviews: [],
+    });
+    saveRegisteredUstalar(list);
+  }
+
+  saveAccount(acc);
+  closeModal(qs('modal-auth'));
+  qs('auth-form').reset();
+  renderProfile();
+  renderFeatured();
+  renderCatalog();
+  showToast(acc.role === 'usta' ? 'Usta sifatida ro‘yxatdan o‘tdingiz' : 'Xush kelibsiz, ' + acc.name);
+}
+
+function logout() {
+  clearAccount();
+  renderProfile();
+  showToast('Akkauntdan chiqdingiz');
 }
 
 /* ---------- usta profile modal ---------- */
@@ -366,6 +629,11 @@ function openProfileModal(ustaId) {
 }
 
 /* ---------- order modal ---------- */
+function populateAuthSelects() {
+  qs('auth-region').insertAdjacentHTML('beforeend', REGIONS.map((r) => `<option value="${r}">${r}</option>`).join(''));
+  qs('auth-category').insertAdjacentHTML('beforeend', CATEGORIES.map((c) => `<option value="${c.key}">${c.label}</option>`).join(''));
+}
+
 function populateOrderSelects() {
   qs('order-category').innerHTML = CATEGORIES.map((c) => `<option value="${c.key}">${c.label}</option>`).join('');
   qs('order-region').innerHTML = '<option value="">Hududni tanlang</option>' + REGIONS.map((r) => `<option value="${r}">${r}</option>`).join('');
@@ -484,7 +752,7 @@ function renderAdmin() {
   `;
 
   qs('admin-orders').innerHTML = orders.length ? orders.map((o) => {
-    const matchingUstalar = USTALAR.filter((u) => u.categoryKey === o.categoryKey);
+    const matchingUstalar = allUstalar().filter((u) => u.categoryKey === o.categoryKey);
     return `
       <div class="admin-order-card">
         <div class="order-top">
@@ -584,6 +852,20 @@ function init() {
     showView('search');
   });
 
+  /* --- akkaunt --- */
+  populateAuthSelects();
+  renderProfile();
+
+  document.querySelectorAll('[data-role-tab]').forEach((btn) => {
+    btn.addEventListener('click', () => { state.authRole = btn.dataset.roleTab; renderAuthForm(); });
+  });
+
+  qs('auth-form').addEventListener('submit', handleAuthSubmit);
+  AUTH_FIELD_IDS.forEach((id) => {
+    qs(id).addEventListener('input', () => setFieldError(id, ''));
+    qs(id).addEventListener('change', () => setFieldError(id, ''));
+  });
+
   /* --- boshqaruv paneliga maxfiy kirish --- */
   document.querySelector('.brand-mark').addEventListener('click', handleLogoTap);
 
@@ -649,7 +931,12 @@ function init() {
     if (!el) return;
     const action = el.dataset.action;
     if (action === 'open-profile') openProfileModal(el.dataset.id);
-    if (action === 'go-category') goToSearchWithCategory(el.dataset.key);
+    if (action === 'home-category') pickHomeCategory(el.dataset.key);
+    if (action === 'catalog-pick') goToSearchWithCategory(el.dataset.key);
+    if (action === 'open-auth') openAuthModal(el.dataset.role);
+    if (action === 'logout') logout();
+    if (action === 'go-orders') showView('orders');
+    if (action === 'go-admin') showView('admin');
     if (action === 'pick-region') {
       setRegion(el.dataset.region);
       renderRegionOptions();
