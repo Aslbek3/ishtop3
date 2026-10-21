@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(export PATH=*)",
+      "Bash(pm2 logs *)",
+      "Bash(pm2 describe *)",
+      "Bash(pm2 jlist)",
+      "Bash(node --check *)",
+      "Bash(curl -s http://127.0.0.1:8090/api/health)",
+      "Bash(curl -s http://127.0.0.1:8090/api/collections/ustalar/records*)",
+      "Bash(curl -s -o /dev/null -w*)"
+    ]
+  }
+}
